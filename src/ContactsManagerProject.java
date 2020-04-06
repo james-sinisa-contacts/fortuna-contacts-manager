@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.sql.SQLOutput;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 //import static java.nio.file.Paths.get;
@@ -44,6 +46,8 @@ public class ContactsManagerProject {
                 displayInfo = false;
             } else if (userInput == 2) {
                 System.out.println("\n\tPlease enter name of new contact:");
+                addContactName();
+                addContactNumber();
                 displayInfo = false;
             } else if (userInput == 3) {
                 System.out.println("\n\tEnter contact name below to begin search:");
@@ -76,8 +80,38 @@ public class ContactsManagerProject {
 
 //Option 2 method:
 
+    public static void addContactName() throws IOException {
+        Scanner Input = new Scanner(System.in);
+        String name = Input.nextLine();
 
+        try {
+            List<String> newContact = Arrays.asList(name);
+            Path filepath = Paths.get("data", "contacts.txt");
+            Files.write(filepath, newContact, StandardOpenOption.APPEND);
 
+        } catch (IOException e) {
+            System.out.println("Error in addContact");
+        }
+
+        addContactNumber();
+    }
+
+    public static void addContactNumber() throws IOException {
+        System.out.println("Enter contact phone number dude!");
+        Scanner Input = new Scanner(System.in);
+        String number = Input.nextLine();
+
+        try {
+            List<String> newNumber = Arrays.asList(number);
+            Path filepath = Paths.get("data", "contacts.txt");
+            Files.write(filepath, newNumber, StandardOpenOption.APPEND);
+
+        } catch (IOException e) {
+            System.out.println("Error in addContact");
+        }
+        displayContacts();
+        displayInfo();
+    }
 
     //Option 3 method:
 //    public static void searchContacts() {
