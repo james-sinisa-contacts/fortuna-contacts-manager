@@ -9,6 +9,7 @@ import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 //import static java.nio.file.Paths.get;
 
 public class ContactsManagerProject {
@@ -114,24 +115,43 @@ public class ContactsManagerProject {
     }
 
     //Option 3 method:
-//    public static void searchContacts() {
-//        Path contactPath = Paths.get("data", "contacts.txt");
-//        Scanner search = new Scanner(System.in);
-//        boolean searching = true;
-//        String input;
-//
-//        do {
-//            System.out.println("Enter name you're searching for: ");
-//            input = search.nextLine();
-//
-//            if (contactPath.equals(input)) {
-//                System.out.println(contactPath.startsWith(input));
-//                searching = false;
-//            } else {
-//                System.out.println("Name not found, try again");
-//            }
-//        } while (searching);
-//
-//    }
+    //Beginning of methods for Option 3 - searching for contact//
+    public static void searchContacts() throws  IOException{
+        Path searchPath = Paths.get("data","contacts.txt");
+        List<String> contacts = Files.lines(searchPath).collect(Collectors.toList());
+
+        String searchContacts = getSearchInput();
+
+        displaySearchContactResult(searchContacts, contacts);
+    }
+
+
+    public static String getSearchInput() throws IOException{
+        Scanner searchContacts = new Scanner(System.in);
+        System.out.println("Who are you searching for?");
+        String contactName = searchContacts.nextLine();
+        searchContacts.close();
+
+        return contactName;
+    }
+
+    public static void displaySearchContactResult(String searchString, List<String> contacts) throws  IOException {
+        boolean inData = false;
+        String userDisplay = "";
+        for(String contact : contacts){
+            if (contact.contains(searchString)) {
+                inData = true;
+                userDisplay = contact;
+                break;
+            }
+        }
+
+        if (inData) {
+            System.out.println("\n\tYarp, we have 'em! Below is contact info:\n" + userDisplay);
+        } else {
+            System.out.println("Narp, no such contact here braj");
+        }
+    }
+    //end here for Option 3 methods - searching for contact
 
 }
